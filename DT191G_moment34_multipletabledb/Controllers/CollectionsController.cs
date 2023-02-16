@@ -131,7 +131,7 @@ namespace DT191G_moment34_multipletabledb.Controllers
             {
                 _context.Add(collection);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Index2));
             }
             return View(collection);
         }
