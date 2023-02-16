@@ -22,13 +22,40 @@ namespace DT191G_moment34_multipletabledb.Controllers
         }
 
         // GET: Collections
-        public async Task<IActionResult> Index(string SearchString)
+        public IActionResult Index2(string SearchString)
         {
+
+            //get borrrowedlist & CollectionList
+            var borrowedList = _context.Borrowed.Include(b => b.Collection).Include(b => b.Friend);
+            var collectionList = _context.Collection;
+            var friendList = _context.Friends;
+            ViewData["CollectionId"] = new SelectList(_context.Collection, "CollectionId", "AlbumTitle");
+            ViewData["FriendId"] = new SelectList(_context.Friends, "FriendId", "Name");
+
+            foreach (var collection in collectionList)
+            {
+                foreach (var borrowed in borrowedList)
+                {
+                    if (collection.CollectionId == borrowed.CollectionId)
+                    {
+                        collection.Borrowed = borrowed.BorrowedId;
+                        foreach (var friend in friendList)
+                        {
+                            if (friend.FriendId == borrowed.FriendId)
+                            {
+                                collection.Friend = friend.Name;
+                            }
+                        }
+                    }
+                }
+            }
+
+            //SEARCH Function
             //assign search string to viewdata
             ViewData["CurrentFilter"] = SearchString;
 
             //get all database in the case that SearchString is null
-            var searchResult = from s in _context.Collection //LINQ method syntax
+            var searchResult = from s in collectionList //LINQ method syntax // _context.Collection
                                select s;
 
             //in the case that SearchString not is null
@@ -36,7 +63,7 @@ namespace DT191G_moment34_multipletabledb.Controllers
             {
 
                 //LINQ Query using Query Syntax to seach all columns and fetch all according to search terms
-                searchResult = from item in _context.Collection //Data Source
+                searchResult = from item in collectionList //Data Source //_context.Collection
                                where item.Artist.ToLower().Contains(SearchString.ToLower()) ||
                                     item.AlbumTitle.ToLower().Contains(SearchString.ToLower()) ||
                                     item.ReleaseYear.Contains(SearchString) ||
@@ -48,22 +75,28 @@ namespace DT191G_moment34_multipletabledb.Controllers
             }
 
             return View(searchResult);
-            
+            //return View(collectionList);
 
-            //two other examples of code:
-
-            //specific search
-            //var year = _context.Collection.Where(c => c.ReleaseYear.Equals("2001")); 
-            //return _context.Collection != null ? 
-            //    View(await year.ToListAsync()) :
-            //    Problem("Entity set 'CollectionContext.Collection'  is null.");
-
-            // return whole table no search function
-            //return _context.Collection != null ? 
-            //    View(await _context.Collection.ToListAsync()) :
-            //    Problem("Entity set 'CollectionContext.Collection'  is null.");
 
         }
+
+
+
+
+        //two other examples of code:
+
+        //specific search
+        //var year = _context.Collection.Where(c => c.ReleaseYear.Equals("2001")); 
+        //return _context.Collection != null ? 
+        //    View(await year.ToListAsync()) :
+        //    Problem("Entity set 'CollectionContext.Collection'  is null.");
+
+        // return whole table no search function
+        //return _context.Collection != null ? 
+        //    View(await _context.Collection.ToListAsync()) :
+        //    Problem("Entity set 'CollectionContext.Collection'  is null.");
+
+
 
         // GET: Collections/Details/5
         public async Task<IActionResult> Details(int? id)
@@ -147,7 +180,7 @@ namespace DT191G_moment34_multipletabledb.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Index2));
             }
             return View(collection);
         }
@@ -186,7 +219,7 @@ namespace DT191G_moment34_multipletabledb.Controllers
             }
             
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Index2));
         }
 
         private bool CollectionExists(int id)
@@ -195,48 +228,6 @@ namespace DT191G_moment34_multipletabledb.Controllers
         }
 
 
-        public IActionResult Index2()
-        {
-
-            //get borrrowedlist & CollectionList
-            var borrowedList = _context.Borrowed.Include(b => b.Collection).Include(b => b.Friend);
-            var collectionList = _context.Collection;
-            var friendList = _context.Friends;
-            ViewData["CollectionId"] = new SelectList(_context.Collection, "CollectionId", "AlbumTitle");
-            ViewData["FriendId"] = new SelectList(_context.Friends, "FriendId", "Name");
-
-            foreach (var collection in collectionList)
-
-            {
-
-                foreach (var borrowed in borrowedList)
-
-                {
-
-                    if (collection.CollectionId == borrowed.CollectionId)
-
-                    {
-
-                        collection.Borrowed = borrowed.BorrowedId;
-
-                        foreach ( var friend in friendList )
-                        {
-                            if (friend.FriendId == borrowed.FriendId)
-                            {
-                                collection.Friend = friend.Name;
-                            }
-                        }
-                        
-
-
-                    }
-
-                }
-
-            }
-
-            return View(collectionList);
-            
-        }
+        
     }
 }

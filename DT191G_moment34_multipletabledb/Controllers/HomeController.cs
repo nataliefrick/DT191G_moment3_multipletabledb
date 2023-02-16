@@ -15,7 +15,8 @@ namespace DT191G_moment34_multipletabledb.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            // return RedirectToAction("actionName", "controllerName", new { area = "" });
+            return RedirectToAction("Index2", "Collections", null);
         }
 
         public IActionResult Privacy()

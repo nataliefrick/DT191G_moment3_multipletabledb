@@ -62,15 +62,11 @@ namespace DT191G_moment34_multipletabledb.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("BorrowedId,Date,CollectionId,FriendId")] Borrowed borrowed)
         {
-           //if (ModelState.IsValid)
-            //{
-                _context.Add(borrowed);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            //}
 
-            ///ViewData["FriendId"] = new SelectList(_context.Friends, "FriendId", "Name", borrowed.FriendId);
-            //return View(borrowed);
+            _context.Add(borrowed);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+
         }
 
         // GET: Borroweds/Edit/5
@@ -86,14 +82,12 @@ namespace DT191G_moment34_multipletabledb.Controllers
             {
                 return NotFound();
             }
-            ViewData["CollectionId"] = new SelectList(_context.Collection, "CollectionId", "CollectionId", borrowed.CollectionId);
+            ViewData["CollectionId"] = new SelectList(_context.Collection, "CollectionId", "AlbumTitle", borrowed.CollectionId);
             ViewData["FriendId"] = new SelectList(_context.Friends, "FriendId", "Name", borrowed.FriendId);
             return View(borrowed);
         }
 
         // POST: Borroweds/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("BorrowedId,Date,CollectionId,FriendId")] Borrowed borrowed)
@@ -103,8 +97,8 @@ namespace DT191G_moment34_multipletabledb.Controllers
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
-            {
+            //if (ModelState.IsValid)
+            //{
                 try
                 {
                     _context.Update(borrowed);
@@ -122,10 +116,12 @@ namespace DT191G_moment34_multipletabledb.Controllers
                     }
                 }
                 return RedirectToAction(nameof(Index));
-            }
-            ViewData["CollectionId"] = new SelectList(_context.Collection, "CollectionId", "CollectionId", borrowed.CollectionId);
+            //}
+
+            ViewData["CollectionId"] = new SelectList(_context.Collection, "CollectionId", "AlbumTitle", borrowed.CollectionId);
             ViewData["FriendId"] = new SelectList(_context.Friends, "FriendId", "Name", borrowed.FriendId);
-            return View(borrowed);
+            //return View(borrowed);
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: Borroweds/Delete/5
@@ -162,8 +158,9 @@ namespace DT191G_moment34_multipletabledb.Controllers
             {
                 _context.Borrowed.Remove(borrowed);
             }
-            
+
             await _context.SaveChangesAsync();
+
             return RedirectToAction(nameof(Index));
         }
 
