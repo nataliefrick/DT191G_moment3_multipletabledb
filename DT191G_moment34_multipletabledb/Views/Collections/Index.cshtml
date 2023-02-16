@@ -1,0 +1,63 @@
+﻿@model IEnumerable<DT191G_moment34_multipletabledb.Models.Collection>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>CD Collection</h1>
+
+<p>
+
+    <form asp-action="Index" method="get">
+        <div class="form-group">
+            <input type="text" value="@ViewData["CurrentFilter"]" id="searchString" name="searchString" />
+            <input type="submit" value="Search" name="searchString" />
+        </div>
+    </form>
+    <a asp-action="Create">Create New</a><span> | </span>
+    <a asp-action="Index">Back to full list</a>
+    <hr />
+</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Artist)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AlbumTitle) @*AlbumTitle*@
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ReleaseYear) @*ReleaseYear*@
+            </th>
+            @*<th>
+                @Html.DisplayNameFor(model => model.FriendId) @*ReleaseYear
+            </th>*@
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Artist)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AlbumTitle)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ReleaseYear)
+            </td>
+                @*<td>
+                    @Html.DisplayFor(modelItem => item.Friend)
+            </td>*@
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.CollectionId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.CollectionId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.CollectionId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

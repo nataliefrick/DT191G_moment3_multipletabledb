@@ -1,0 +1,48 @@
+﻿@model IEnumerable<DT191G_moment34_multipletabledb.Models.Borrowed>
+
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Borrowed</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Date)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Friend)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Collection)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Date)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Friend.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Collection.AlbumTitle)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.BorrowedId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.BorrowedId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.BorrowedId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

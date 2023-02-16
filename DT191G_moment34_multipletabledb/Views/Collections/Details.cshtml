@@ -1,0 +1,52 @@
+﻿@model DT191G_moment34_multipletabledb.Models.Collection
+
+@{
+    ViewData["Title"] = "Details";
+
+    string? songList = Model.SongList;
+    string[] songs = songList.Split(',');
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Collection</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Artist)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Artist)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.AlbumTitle)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.AlbumTitle)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.ReleaseYear)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.ReleaseYear)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.SongList)
+        </dt>
+        <dd class = "col-sm-10">
+            <ol>
+                @{
+                    foreach (var song in songs)
+                    {
+                           <li>@song</li>
+                    }
+                }
+            </ol>
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.CollectionId">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>
